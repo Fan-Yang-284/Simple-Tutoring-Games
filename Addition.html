@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <!--Font Awesome icons-->
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+        
+        <style>
+            body{
+                background-color:#99ffff;
+                font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+            }
+            #container{
+                padding: none;
+                margin-left: 35vw;
+                margin-top:0%;
+                width: 25vw;
+                height: 70vh;
+                background-color: cornflowerblue;
+                border-radius: 5px;
+                animation: fadein 1.5s;
+                position:fixed;
+            }
+            #AnswerField{
+                opacity: 0;
+                transition: 1s;
+            }
+            #userAnswer{
+                position:relative;
+                height:20%;
+                width: 75%;
+                font-size: large;
+                text-align: center;
+            }
+            #Values{
+                font-size:large;
+                color:white;
+                margin-top:10%;
+            }
+            #party-l{
+                position:absolute;
+                width:20%;
+                height:auto;
+                left:5vw;
+                top:25vh;
+                opacity:0;
+                animation:none;
+            }
+            #party-r{
+                position:absolute;
+                transform: scaleX(-1);
+                width:20%;
+                height:auto;
+                right:5vw;
+                top:25vh;
+                opacity:0;
+                animation:none;
+            }
+            @keyframes correct{
+                0%{
+                    opacity:0;
+                }
+                25%{
+                    opacity:1;
+                    width:25%;
+                    height:auto;
+                }
+                50%{
+                    opacity:1;
+                    width:20%;
+                    height:auto;
+                }
+                75%{
+                    opacity:1;
+                    width:25%;
+                    height:auto;
+                }
+                100%{
+                    width:20%;
+                    height:auto;
+                    opacity:0;
+                }
+            }
+
+            </style>
+    </head>
+    <body>
+        <img id = "party-l" src = "https://images.emojiterra.com/google/android-10/512px/1f389.png" alt="Woohoo!!""></img>
+        <img id = "party-r" src = "https://images.emojiterra.com/google/android-10/512px/1f389.png" alt="Woohoo!!""></img>
+        <div class="container-fluid">
+            <div class="alert alert-success fade out text-center" id="correctAlert">
+                <strong>Great job!</strong> That's the correct answer!</span>
+        </div>
+        <div class="alert alert-warning fade out text-center" id="incorrectAlert">
+            <strong>Good effort!</strong> There seems to be a little slip-up, try again!</span>
+        </div>
+
+        <div id="container">
+            <!--click on button to generate an arithmetic question-->
+            <button id = "Start" class = "btn btn-default btn-block"><i class="fas fa-play"></i>  Begin! </i></button>
+            <div id = "AnswerField" class="text-center">
+                <p id="Values"></p><br><br>
+                <input id = "userAnswer" placeholder="Type your answer here!"></input><br><br>
+                <button id = "Check" class="btn btn-default" onclick = "check()">Check!</button>
+            </div>
+        
+        </div>
+
+        <script>
+            //Start the addition program
+            $('#Start').on('click',function(){
+                $('#Start').text("Next Question!");
+                $('#Start').prop("disabled", true);
+                document.getElementById('Check').disabled = false;
+                generateAdditionQuestion(), document.getElementById('AnswerField').style.opacity = 1;
+                document.getElementById('userAnswer').value = '';
+            });
+
+            // section of code for BS alerts
+            function toggleCorrectAlert(){
+                $("#correctAlert").toggleClass('in out'); 
+                return false; // Keep close.bs.alert event from removing from DOM
+            }
+            $("#btn").on("click", toggleCorrectAlert);
+            $('#correctAlert').on('close.bs.alert', toggleCorrectAlert)
+
+            function closeCorrectAlert(){
+                window.setTimeout(function () {
+                    toggleCorrectAlert()
+                }, 3000);
+            } 
+
+            function toggleIncorrectAlert(){
+                $("#incorrectAlert").toggleClass('in out'); 
+                return false; // Keep close.bs.alert event from removing from DOM
+            }
+            $('#incorrectAlert').on('close.bs.alert', toggleIncorrectAlert)
+            
+            function closeIncorrectAlert(){
+                window.setTimeout(function () {
+                    toggleIncorrectAlert()
+                    $('#Check').prop("disabled", false); 
+                }, 5000);
+            } 
+
+            var counter = 0;
+            
+            $('#Check').on("click", function(){       
+                $('#Check').prop("disabled", true);        
+                let currVal = document.getElementById("userAnswer").value;
+                console.log(currVal)
+
+                if (currVal == ""){
+                    $('#incorrectAlert').html('Please enter an answer!')
+                        toggleIncorrectAlert();
+                        closeIncorrectAlert();
+                }else {
+                    if (isNaN(currVal)){
+                        $('#incorrectAlert').html('Make sure what\'s in the answer box is a <strong>number</strong> - check your answer for letters or special characters!')
+                            toggleIncorrectAlert();
+                            closeIncorrectAlert();
+                    } else {
+                        if (currVal == correctAnswer){                            
+                            toggleCorrectAlert();
+                            closeCorrectAlert()
+                            document.getElementById("Start").disabled = false; 
+                            document.getElementById("Check").disabled = true;
+                            counter = 0;
+                            $('#party-l, #party-r').css("animation", "correct 5s");
+                            window.setTimeout(function(){
+                                $('#party-l, #party-r').css("animation", "none");
+                            }, 5000)
+                            return true;
+                        }else{
+                            counter++;
+                            if (counter != 0 && counter%3==0){
+                                $('#incorrectAlert').html('Check out this great website at <a target = "_blank" class = "alert-link" href= "https://www.mathsisfun.com/basic-math-definitions.html">this website</a> if you need some assistance!');
+                                toggleIncorrectAlert();
+                                closeIncorrectAlert();
+                            }else{
+                            $('#incorrectAlert').html('<strong>Good effort!</strong> There seems to be a little slip-up, try again!</span>')
+                            toggleIncorrectAlert();
+                            closeIncorrectAlert();
+                            }
+                        }
+                    }
+                }
+                return false;
+            })
+
+            // Addition Question Generator
+            const generateAdditionQuestion = () =>{
+                let randNum1 = Math.ceil(Math.random()*15 + 1);
+                let randNum2 = Math.ceil(Math.random()*15 + 1); 
+                correctAnswer = randNum2 + randNum1;
+                console.log(randNum1,randNum2,correctAnswer);
+                document.getElementById("Values").innerHTML = `What is ${randNum1} + ${randNum2}?`;
+            }
+            document.addEventListener("keyup", function(e){
+                if (e.keyCode===13){
+                    document.getElementById("Check").click();
+                    document.getElementById("Start").click();
+                }
+            })
+        </script>
+    </body>
+</html>

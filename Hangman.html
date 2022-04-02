@@ -1,0 +1,379 @@
+<html>
+<head>
+<style>
+html{
+background-color: #9fc6ed;
+font-family: Arial;
+color: #05203b;
+}
+
+#a1{
+font-size:200%;
+}
+#letters{
+user-select:none;
+color: #d3e4f5;
+
+}
+button {
+
+width:60px;
+height:60px;
+background-color: #114b85;
+color: #d3e4f5;
+text-align: center;
+border:1px solid;
+border-radius: 50%;
+font-size: 16px;
+}
+
+#picBox {
+position:relative;
+width:300px;
+height:400px;
+background-color:#0099FF;
+float:right;
+margin-right: 50px;
+border: 100px
+}
+#frameTopHorizontal {
+position:relative;
+width:100px;
+height:10px;
+background-color:black;
+float:right;
+margin-top:30px;
+margin-right:50px;
+}
+#frameLeftVertical {
+position:relative;
+width:10px;
+height:30px;
+background-color:black;
+float:right;
+margin-top:40px;
+margin-right:-10px;
+}
+#frameRightVertical {
+position:relative;
+width:10px;
+height:350px;
+background-color:black;
+float:right;
+margin-top:40px;
+margin-right:-100px;
+}
+#frameBottomHorizontal {
+position:relative;
+width:230px;
+height:10px;
+background-color:black;
+float:right;
+margin-top:350px;
+margin-right:20px;
+}
+#additionHead{
+position:relative;
+width:40px;
+height:40px;
+border-radius:50%;
+border:10px solid black;
+margin-top:30px;
+margin-left:-25px;
+}
+#additionBody{
+position:relative;
+width:10px;
+height:100px;
+background-color:black;
+}
+#additionLeftArm{
+position:relative;
+width:10px;
+height:80px;
+background-color:black;
+transform: rotate(-45deg);
+margin-left:-30px;
+margin-top:-120px;
+}
+#additionRightArm{
+position:relative;
+width:10px;
+height:80px;
+background-color:black;
+transform: rotate(45deg);
+margin-top:-80px;
+margin-left:30px;
+}
+#additionLeftLeg{
+position:relative;
+width:10px;
+height:100px;
+background-color:black;
+transform: rotate(45deg);
+margin-top:20px;
+margin-left:-35px;
+}
+#additionRightLeg{
+position:relative;
+width:10px;
+height:100px;
+background-color:black;
+transform: rotate(-45deg);
+margin-top:-100px;
+margin-left:35px;
+}
+
+#tryit{
+width:160px;
+height:60px;
+background-color: #114b85;
+color: #d3e4f5;
+text-align: center;
+border:1px solid;
+border-radius: 30%;
+font-size: 36px;
+}
+
+</style>
+
+<script>
+var word = "";
+var indices = [];
+indices.id="indices"
+//reloads page
+function reloadPage(){
+    location.reload();
+}
+
+var tracker = 0;
+var count = 0;
+var count2 = 0;
+
+//generate word and number of letter spaces based on word length
+function randomWord(){
+if(count2==0){
+var randNum = Math.floor(Math.random() * 5 + 6);
+var randNum2 = Math.floor(Math.random() * 6);
+var listOf6Words = ["BUTTON", "PIRATE", "TURTLE", "PEOPLE", "ANIMAL", "OTTAWA"];
+var listOf7Words = ["MONKEYS", "HOLIDAY", "EMPATHY", "DOLPHIN", "ENGLISH", "BREATHE"];
+var listOf8Words = ["CALENDAR","SPELLING","TEACHING","MAJESTIC","DISTINCT","MONSTERS"];
+var listOf9Words = ["MANGANESE", "AEROBATIC", "BYPRODUCT", "FORENSICS", "PALEOZOIC", "SHIITAKES"];
+if (randNum == 6){
+word = listOf6Words[randNum2];
+}else if (randNum == 7){
+word =  listOf7Words[randNum2];
+}else if (randNum == 8){
+word =  listOf8Words[randNum2];
+}else if (randNum == 9){
+word =  listOf9Words[randNum2];
+}
+indices = ["_", " ", "_", " ", "_", " ", "_", " ", "_", " ", "_", " ", "_", " ", "_", " ", "_", " ", "_"];
+if (randNum == 6){
+for (i=12;i<=18;i++)
+{
+indices[i]="";
+}
+document.getElementById("a1").innerHTML = indices.join("");
+console.log(randNum);
+}else if (randNum == 7){
+for (i=14;i<=18;i++)
+{
+indices[i]="";
+}
+document.getElementById("a1").innerHTML = indices.join("");
+console.log(randNum);
+} else if (randNum == 8){
+for (i=16;i<=18;i++)
+{
+indices[i]="";
+}
+document.getElementById("a1").innerHTML = indices.join("");
+console.log(randNum);
+} else if (randNum == 9){
+for (i=18;i<=18;i++)
+{
+indices[i]="";
+}
+document.getElementById("a1").innerHTML = indices.join("");
+console.log(randNum);
+}
+console.log(word);
+count2 = count2+1;
+var responses = word;
+}else{
+}
+}
+
+
+function myFunction() {
+if(count==0){
+//create the 26 buttons
+for(x=1;x<=26;x++){
+//use the createElement function to create known HTML elements
+var btn = document.createElement("BUTTON");
+var myP = document.createElement("br");
+
+//why start at 64? Because the letter 'A' is code 65
+    var letter = String.fromCharCode(x+64);
+    var t = document.createTextNode(letter);
+//add the text stored in 't' to the our button variable
+    btn.appendChild(t);
+//give the btn an id to make it easy to access later
+    btn.id = letter;
+//this is how to add an event to the button -- name the event and
+//then include the function you want it to perform
+    btn.addEventListener("click", checkLetter);
+    btn.addEventListener("click", changeColor);
+btn.addEventListener("click", disableButton);
+
+//add the btn to the page
+ document.body.appendChild(btn);
+//add a line break 'myP' after 13 buttons
+ if (x%13==0) {
+   document.body.appendChild(myP);
+}
+    }
+count=count+1
+}
+else{
+alert("You have already generated your keyboard.");
+}
+}
+
+//letter clicking
+function checkLetter(){
+
+if (tracker<6){
+
+//this refers to the object that called this function
+alert("You clicked: " + this.id);
+
+document.getElementById("p1").innerHTML += this.id;
+
+var n = word.indexOf(this.id);
+
+//Not in word
+if(n == -1){
+alert("not in word");
+
+//tracks the number of mistakes
+tracker = tracker + 1;
+
+//add body parts based on the number of mistakes
+if(tracker==1){
+document.getElementById("1").id = "additionHead";
+}
+if(tracker==2){
+document.getElementById("2").id = "additionBody";
+}
+if(tracker==3){
+document.getElementById("3").id = "additionLeftArm";
+}
+if(tracker==4){
+document.getElementById("4").id = "additionRightArm";
+}
+if(tracker==5){
+document.getElementById("5").id = "additionLeftLeg";
+}
+if(tracker==6){
+document.getElementById("6").id = "additionRightLeg";
+alert("You lost!");
+// add red border and correct word
+	document.getElementById("a1").style.border = "dotted red";
+	document.getElementById("b1").innerHTML = "Correct word: " + word;
+
+
+//disables all the letter buttons on losing
+for (i=1;i<=26;i++){
+var letterValue = String.fromCharCode(i+64)
+document.getElementById(letterValue).disabled = true;
+}
+
+//adds try again button after losing
+var btn_retry = document.createElement("BUTTON");
+document.body.appendChild(btn_retry);
+btn_retry.addEventListener("click", reloadPage);
+btn_retry.innerHTML="Play Again"
+}
+
+//in word
+}else{
+//number of mistakes doesn't change
+tracker = tracker;
+alert("in word");
+
+//checks all the letters in the generated word for compatability with the clicked letter
+for(i=0; i<word.length; i++) {
+//if character of word at index i is the same as the chosen letter, turn the letter space in indices into that letter value
+//multiply i by 2 because the letter spaces appear every two characters, alternating "_", " "
+if (word.charAt(i) == this.id){
+indices[2*i] = this.id;
+}
+
+}
+
+//displaying all correct characters after a guess
+document.getElementById("a1").innerHTML = indices.join("");
+}
+// once word is correctly chosen ie all letter spaces have a letter value
+if (indices[0]!="_"&&indices[2]!="_"&&indices[4]!="_"&&indices[6]!="_"&&indices[8]!="_"&&indices[10]!="_"&&indices[12]!="_"&&indices[14]!="_"&&indices[16]!="_"&&indices[18]!="_"){
+alert("You Win!");
+// add green border around word
+	document.getElementById("a1").style.border = "dotted green";
+// disable letter buttons and add play again button
+for (i=1;i<=26;i++){
+var letterValue = String.fromCharCode(i+64)
+document.getElementById(letterValue).disabled = true;
+}
+var btn_retry = document.createElement("BUTTON")
+document.body.appendChild(btn_retry);
+btn_retry.addEventListener("click", reloadPage);
+btn_retry.innerHTML = "Play Again";
+
+}
+}else{
+alert("You lost!");
+}
+}
+
+//changes the color of the button onclick
+function changeColor(){
+this.style.backgroundColor="blue";
+
+}
+
+//disables the button after being clicked, so user cannot click the same button more than once
+function disableButton(){
+this.disabled = true;
+}
+
+
+</script>
+
+</head>
+<body>
+<button onclick="myFunction();randomWord();" id="tryit">Begin</button>
+<p id="a1"></p>
+<p id ="p1"> Letters picked: </p>
+<div>
+<p id="answer"></p>
+<p id="letters"></p>
+<p id="b1"></p>
+</div>
+<div id= "picBox">
+<div id="frameTopHorizontal"></div>
+<div id="frameLeftVertical">
+<div id="1"></div>
+<div id="2"></div>
+<div id="3"></div>
+<div id="4"></div>
+<div id="5"></div>
+<div id="6"></div>
+</div>
+<div id="frameRightVertical"></div>
+<div id="frameBottomHorizontal"></div>
+</div>
+
+</body>
+</html>
